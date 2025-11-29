@@ -1,13 +1,13 @@
 class Pharmacy {
-  String name;
-  String dist;
-  String address;
-  String phone;
-  String loc;
-  String lat;
-  String long;
+  String? name;
+  String? dist;
+  String? address;
+  String? phone;
+  String? loc;
+  String? lat;
+  String? long;
 
-  Pharmacy({this.name, this.dist, this.address, this.phone, this.loc});
+  Pharmacy({this.name, this.dist, this.address, this.phone, this.loc, this.lat, this.long});
 
   Pharmacy.fromJson(Map<String, dynamic> json) {
     name = json['name'];
@@ -18,7 +18,8 @@ class Pharmacy {
     splitLocation(loc);
   }
 
-  void splitLocation(String location){
+  void splitLocation(String? location){
+    if (location == null) return;
     List<String> longLat = location.split(",");
     if(longLat.isNotEmpty){
       lat = longLat[0];

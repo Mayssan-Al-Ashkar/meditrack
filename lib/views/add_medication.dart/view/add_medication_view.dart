@@ -5,8 +5,9 @@ import 'package:medication_app_v0/core/constants/navigation/navigation_constants
 import 'package:medication_app_v0/core/extention/context_extention.dart';
 import 'package:medication_app_v0/core/init/navigation/navigation_service.dart';
 import 'package:medication_app_v0/views/add_medication.dart/viewmodel/add_medication_viewmodel.dart';
-import "package:medication_app_v0/views/Inventory/model/inventory_model.dart";
 import 'package:medication_app_v0/core/components/widgets/drawer.dart';
+import 'package:medication_app_v0/views/Inventory/model/inventory_model.dart';
+import 'package:medication_app_v0/core/init/services/auth_manager.dart';
 
 class AddMedicationView extends StatefulWidget {
   @override
@@ -16,9 +17,9 @@ class AddMedicationView extends StatefulWidget {
 class _AddMedicationViewState extends State<AddMedicationView> {
   @override
   Widget build(BuildContext context) {
-    return BaseView(
+    return BaseView<AddMedicationViewModel>(
         model: AddMedicationViewModel(),
-        onModelReady: (model) {
+        onModelReady: (AddMedicationViewModel model) {
           model.setContext(context);
           model.init();
         },
@@ -49,7 +50,13 @@ class _AddMedicationViewState extends State<AddMedicationView> {
                   "Scan qr code",
                   style: context.textTheme.subtitle1,
                 ),
-                InventoryMedicationCard(model: viewmodel.getMedicine),
+                InventoryMedicationCard(
+                    model: InventoryModel(
+                  name: viewmodel.medicationNameController.text,
+                  company: viewmodel.companyController.text,
+                  activeIngredient: viewmodel.activeIngredientController.text,
+                  expiredDate: viewmodel.expiredDate ?? DateTime(2100),
+                )),
                 buildAddMedicationButton(viewmodel, context)
               ],
             ),
@@ -64,7 +71,16 @@ class _AddMedicationViewState extends State<AddMedicationView> {
     final NavigationService navigation = NavigationService.instance;
     return ElevatedButton(
         onPressed: () async {
-          bool saveResult = await viewmodel.saveManuelMedicationToFirebase();
+          bool saveResult = false;
+          if (viewmodel.medicationFormState.currentState?.validate() ?? false) {
+            final InventoryModel model = InventoryModel(
+              name: viewmodel.medicationNameController.text,
+              company: viewmodel.companyController.text,
+              activeIngredient: viewmodel.activeIngredientController.text,
+              expiredDate: viewmodel.expiredDate ?? DateTime(2100),
+            );
+            saveResult = await AuthManager.instance.postMedication(model);
+          }
           String saveResultString =
               saveResult ? "Medication successfully added" : "addition failed";
           if (saveResult) {
@@ -90,10 +106,9 @@ class _AddMedicationViewState extends State<AddMedicationView> {
       key: viewmodel.medicationFormState,
       child: Column(
         children: [
-          TextFormField(
+              TextFormField(
               controller: viewmodel.medicationNameController,
-              validator: (value) =>
-                  value.isNotEmpty ? null : "Medications must have a name",
+              validator: (value) => (value != null && value.isNotEmpty) ? null : "Medications must have a name",
               decoration: InputDecoration(
                 prefixIcon: Icon(Icons.medical_services),
                 labelText: "Medication Name",
