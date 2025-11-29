@@ -61,13 +61,9 @@ abstract class _LoginViewModelBase with Store, BaseViewModel {
   }
 
   void changeLanguageOnPress(BuildContext context) {
-    if (context.locale.countryCode
-            .compareTo(AppConstants.EN_LOCALE.countryCode) ==
-        0) {
+    if (context.locale.countryCode == AppConstants.EN_LOCALE.countryCode) {
       context.setLocale(AppConstants.TR_LOCALE);
-    } else if (context.locale.countryCode
-            .compareTo(AppConstants.TR_LOCALE.countryCode) ==
-        0) {
+    } else if (context.locale.countryCode == AppConstants.TR_LOCALE.countryCode) {
       context.setLocale(AppConstants.EN_LOCALE);
     }
   }

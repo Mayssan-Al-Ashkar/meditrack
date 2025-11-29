@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:medication_app_v0/core/init/text/locale_text.dart';
-import 'package:medication_app_v0/core/init/theme/color_theme.dart';
 import '../../../../core/base/view/base_widget.dart';
 import '../viewmodel/singup_viewmodel.dart';
 import '../../../../core/extention/context_extention.dart';
@@ -11,9 +10,9 @@ import '../../../../core/extention/string_extention.dart';
 class SignUpView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return BaseView(
+    return BaseView<SignupViewModel>(
       model: SignupViewModel(),
-      onModelReady: (model) {
+      onModelReady: (SignupViewModel model) {
         model.setContext(context);
         model.init();
       },
@@ -62,12 +61,12 @@ class SignUpView extends StatelessWidget {
     );
   }
 
-  TextFormField buildTextFormFieldMail(viewmodel) {
+  TextFormField buildTextFormFieldMail(SignupViewModel viewmodel) {
     return TextFormField(
       controller: viewmodel.mailController,
       validator: (value) => (viewmodel.validateEmail(value)),
       onSaved: (value) {
-        viewmodel.mailController = value;
+        viewmodel.mailController.text = value ?? '';
       },
       keyboardType: TextInputType.emailAddress,
       decoration: InputDecoration(
@@ -78,12 +77,12 @@ class SignUpView extends StatelessWidget {
     );
   }
 
-  TextFormField buildTextFormFieldPassword(viewmodel) {
+  TextFormField buildTextFormFieldPassword(SignupViewModel viewmodel) {
     return TextFormField(
       controller: viewmodel.passwordController,
       validator: (value) => (viewmodel.emptyCheck(value)),
       onSaved: (value) {
-        viewmodel.passwordController = value;
+        viewmodel.passwordController.text = value ?? '';
       },
       obscureText: true,
       decoration: InputDecoration(
@@ -94,12 +93,12 @@ class SignUpView extends StatelessWidget {
     );
   }
 
-  TextFormField buildTextFormFieldId(viewmodel) {
+  TextFormField buildTextFormFieldId(SignupViewModel viewmodel) {
     return TextFormField(
       controller: viewmodel.idController,
       validator: (value) => (viewmodel.emptyCheck(value)),
       onSaved: (value) {
-        viewmodel.idController = value;
+        viewmodel.idController.text = value ?? '';
       },
       decoration: InputDecoration(
           hintText: LocaleKeys.authentication_ID_HINT_TEXT.locale,
@@ -109,12 +108,12 @@ class SignUpView extends StatelessWidget {
     );
   }
 
-  TextFormField buildTextFormFieldName(viewmodel) {
+  TextFormField buildTextFormFieldName(SignupViewModel viewmodel) {
     return TextFormField(
       controller: viewmodel.nameController,
       validator: (value) => (viewmodel.emptyCheck(value)),
       onSaved: (value) {
-        viewmodel.nameController = value;
+        viewmodel.nameController.text = value ?? '';
       },
       decoration: InputDecoration(
           hintText: LocaleKeys.authentication_NAME_HINT_TEXT.locale,

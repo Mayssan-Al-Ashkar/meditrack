@@ -11,9 +11,9 @@ import '../../../../core/extention/context_extention.dart';
 class ForgotPasswordView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return BaseView(
+    return BaseView<ForgotPasswordViewModel>(
       model: ForgotPasswordViewModel(),
-      onModelReady: (model) {
+      onModelReady: (ForgotPasswordViewModel model) {
         model.setContext(context);
         model.init();
       },

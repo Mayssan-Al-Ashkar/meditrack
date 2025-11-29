@@ -36,7 +36,7 @@ abstract class _SignupViewModelBase with Store, BaseViewModel {
     mailController = TextEditingController();
     idController = TextEditingController();
     passwordController = TextEditingController();
-    singupFormState = GlobalKey();
+    singupFormState = GlobalKey<FormState>();
   }
 
   //contorllerleri nerede dispose edeceğim???
@@ -52,9 +52,7 @@ abstract class _SignupViewModelBase with Store, BaseViewModel {
 
   @action
   void _changeDate(DateTime pickedDate) {
-    if (pickedDate != null) {
-      date = pickedDate;
-    }
+    date = pickedDate;
   }
 
   String? emptyCheck(String? value) {
@@ -78,13 +76,14 @@ abstract class _SignupViewModelBase with Store, BaseViewModel {
 
   //register user and put user data to firebaseDb
   Future<String> userRegistration() async {
-    if (singupFormState.currentState.validate()) {
+    if (singupFormState.currentState?.validate() ?? false) {
       UserDataModel userDataModel = UserDataModel(
           birthDay: getDate.toString(),
           fullName: nameController.text,
           mail: mailController.text);
       String signupResponse = await AuthManager.instance
-          .registerUser(userDataModel, passwordController.text);
+              .registerUser(userDataModel, passwordController.text) ??
+          '';
       //go to splash screen, if signup succesful.
       if (signupResponse
               .compareTo(LocaleKeys.authentication_SIGNUP_SUCCESFUL.locale) ==

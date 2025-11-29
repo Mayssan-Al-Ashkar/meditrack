@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_mobx/flutter_mobx.dart';
 import '../../../../core/base/view/base_widget.dart';
 import '../viewmodel/verify_mail_code_viewmodel.dart';
 import '../../../../core/extention/context_extention.dart';
@@ -7,9 +6,9 @@ import '../../../../core/extention/context_extention.dart';
 class VerifyMailCodeView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return BaseView(
+    return BaseView<VerifyMailCodeViewModel>(
       model: VerifyMailCodeViewModel(),
-      onModelReady: (model){
+      onModelReady: (VerifyMailCodeViewModel model){
         model.setContext(context);
         model.init();
       },
@@ -74,8 +73,8 @@ class VerifyMailCodeView extends StatelessWidget {
     );
   }
       
-  String emptyCheck(String value) {
-    if (value.isEmpty){
+  String? emptyCheck(String? value) {
+    if (value == null || value.isEmpty) {
       return "E-mail is required!";
     }
     return null;

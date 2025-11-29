@@ -1,14 +1,14 @@
 class DenemeModel {
-  String birthDay;
-  String fullName;
-  String mail;
+  String? birthDay;
+  String? fullName;
+  String? mail;
 
   DenemeModel({this.birthDay, this.fullName, this.mail});
 
   DenemeModel.fromJson(Map<String, dynamic> json) {
-    birthDay = json['birthDay'];
-    fullName = json['fullName'];
-    mail = json['mail'];
+    birthDay = json['birthDay'] as String?;
+    fullName = json['fullName'] as String?;
+    mail = json['mail'] as String?;
   }
 
   Map<String, dynamic> toJson() {

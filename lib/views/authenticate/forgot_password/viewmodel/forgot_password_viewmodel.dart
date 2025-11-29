@@ -12,13 +12,13 @@ abstract class _ForgotPasswordViewModelBase with Store, BaseViewModel {
   void setContext(BuildContext context) => this.viewContext = context;
   void init() {}
 
-  String validateEmail(String value) {
+  String? validateEmail(String? value) {
     String pattern =
         r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]"
         r"{0,253}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]"
         r"{0,253}[a-zA-Z0-9])?)*$";
     RegExp regex = RegExp(pattern);
-    if (!regex.hasMatch(value) || value == null)
+    if (value == null || !regex.hasMatch(value))
       return 'Enter a valid email address.';
     else
       return null;

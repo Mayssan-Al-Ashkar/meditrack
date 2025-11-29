@@ -31,8 +31,8 @@ abstract class _ResetPasswordViewModelBase with Store, BaseViewModel {
   }
 
   String? validatePassword(String? value) {
-    Pattern pattern = r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,}$';
-    RegExp regExp = new RegExp(pattern);
+    String pattern = r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,}$';
+    RegExp regExp = RegExp(pattern);
     if (value == null || !regExp.hasMatch(value) || value.length < 8) {
       return 'Enter valid password.';
     } else
@@ -49,10 +49,10 @@ abstract class _ResetPasswordViewModelBase with Store, BaseViewModel {
   }
 
   void changePassword() async {
-    String result =
+    String? result =
         await AuthManager.instance.changePassword(resetPasswordController.text);
     final _snackBar = SnackBar(
-      content: Text(result),
+      content: Text(result ?? ''),
     );
     ScaffoldMessenger.of(viewContext!).showSnackBar(_snackBar);
     //var x = await AuthManager.instance.setUserData(); ????????????

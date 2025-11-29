@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:medication_app_v0/core/components/widgets/custom_bottom_appbar.dart';
 import 'package:medication_app_v0/core/init/theme/color_theme.dart';
-import 'package:medication_app_v0/views/authenticate/forgot_password/viewmodel/forgot_password_viewmodel.dart';
 import '../../../../core/base/view/base_widget.dart';
 import '../viewmodel/reset_password_viewmodel.dart';
 import 'package:medication_app_v0/core/components/widgets/drawer.dart';
@@ -11,9 +10,9 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 class ResetPasswordView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return BaseView(
+    return BaseView<ResetPasswordViewModel>(
       model: ResetPasswordViewModel(),
-      onModelReady: (model) {
+      onModelReady: (ResetPasswordViewModel model) {
         model.setContext(context);
         model.init();
       },

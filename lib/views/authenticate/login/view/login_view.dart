@@ -19,7 +19,7 @@ class LoginView extends StatelessWidget {
   Widget build(BuildContext context) {
     return BaseView<LoginViewModel>(
         model: LoginViewModel(),
-        onModelReady: (model) {
+        onModelReady: (LoginViewModel model) {
           model.setContext(context);
           model.init();
         },
@@ -80,7 +80,7 @@ class LoginView extends StatelessWidget {
             ),
           ],
         ),
-        style: Theme.of(context).elevatedButtonTheme.style.copyWith(
+        style: Theme.of(context).elevatedButtonTheme.style?.copyWith(
             backgroundColor:
                 MaterialStateProperty.all<Color>(ColorTheme.BACKGROUND_WHITE)),
         onPressed: () async {
@@ -114,7 +114,7 @@ class LoginView extends StatelessWidget {
         onPressed: () {
           viewModel.changeLanguageOnPress(context);
         },
-        child: Text(context.locale.countryCode));
+        child: Text(context.locale.countryCode ?? ''));
   }
 
   Center get buildLogoImage {
@@ -146,7 +146,7 @@ class LoginView extends StatelessWidget {
         viewModel.loginEmailAndPassword();
       },
       //TODO EGER BELIRLEDIGIMIZ TEMA DISINDA BIR RENK VERMEK ISTERSEK COPYWITH DEYIP O SPESIFIK OZELLIGI DEGISTIRIYORUZ.
-      style: Theme.of(context).elevatedButtonTheme.style.copyWith(
+      style: Theme.of(context).elevatedButtonTheme.style?.copyWith(
           backgroundColor:
               MaterialStateProperty.all<Color>(ColorTheme.RED_BUTTON)),
     );
@@ -188,8 +188,8 @@ class LoginView extends StatelessWidget {
     return Observer(builder: (_) {
       return TextFormField(
         controller: viewmodel.passwordController,
-        validator: (value) => value.isNotEmpty
-            ? null
+        validator: (value) => (value != null && value.isNotEmpty)
+          ? null
             : LocaleKeys.authentication_REQUIRED_TEXT.locale,
         obscureText: !viewmodel.isPasswordVisible,
         decoration: InputDecoration(
