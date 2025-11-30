@@ -12,7 +12,7 @@ class FirebaseService {
       baseUrl:
           "https://medicationapp-92ffd-default-rtdb.europe-west1.firebasedatabase.app"));
   final String _firebaseAuthUrl =
-      "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyDtcp7MBA7x8SSz_Z8bgHRxwLjLEyyjOFY";
+      "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=--yourkey--";
 
   //sign İn with email and password
   Future postUser(UserRequest request) async {
