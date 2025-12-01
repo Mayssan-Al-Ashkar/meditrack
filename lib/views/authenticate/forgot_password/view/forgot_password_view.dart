@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:medication_app_v0/core/init/theme/color_theme.dart';
-import '../../verify_mail_code/view/verify_mail_code_view.dart';
 import '../../../../core/base/view/base_widget.dart';
 import '../viewmodel/forgot_password_viewmodel.dart';
 import 'package:medication_app_v0/core/components/widgets/drawer.dart';
