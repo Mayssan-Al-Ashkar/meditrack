@@ -7,7 +7,6 @@ import 'package:medication_app_v0/core/extention/string_extention.dart';
 class GoogleSignHelper {
   static GoogleSignHelper _instance = GoogleSignHelper._private();
   GoogleSignHelper._private() {
-    //user change listener!!
     _auth.authStateChanges().listen((User? user) async {
       if (user == null) {
         print("signed out stream listener!!!");
@@ -33,7 +32,6 @@ class GoogleSignHelper {
     }
   }
 
-  //enter application via google
   Future<User?> firebaseSigninWithGoogle() async {
     try {
       final GoogleAuthProvider provider = GoogleAuthProvider();
@@ -52,8 +50,7 @@ class GoogleSignHelper {
           email: email, password: password);
       User? user = result.user;
       if (user != null) {
-        //String tempToken = await user.getIdToken();
-        //print(tempToken);
+       
         return user;
       }
       return null;
@@ -64,7 +61,6 @@ class GoogleSignHelper {
     }
   }
 
-  //kayıt edip signin oluyor!!!! return UserCredential or error message
   Future<dynamic> signUpWithEmailAndPassword(
       String email, String password) async {
     try {
@@ -86,7 +82,6 @@ class GoogleSignHelper {
     }
   }
 
-  //helper functions
 
   Future<void> _saveUserToCache(User user) async {
     var tokenResult = await user.getIdToken();
