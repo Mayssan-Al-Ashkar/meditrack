@@ -4,7 +4,7 @@ import 'package:medication_app_v0/core/components/models/covid_models/country_mo
 import 'package:medication_app_v0/core/components/models/covid_models/country_summary_model.dart';
 
 class CovidService {
-=  Future<List<CountrySummaryModel>> getCountrySummary(String slug) async {
+ Future<List<CountrySummaryModel>> getCountrySummary(String slug) async {
     try {
       Uri uri =
           Uri.parse("https://api.covid19api.com/total/dayone/country/" + slug);
