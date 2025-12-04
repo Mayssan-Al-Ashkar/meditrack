@@ -1,0 +1,104 @@
+import 'package:flutter/material.dart';
+import 'package:medication_app_v0/core/base/viewmodel/base_viewmodel.dart';
+import 'package:medication_app_v0/core/components/models/others/user_data_model.dart';
+import 'package:medication_app_v0/core/constants/navigation/navigation_constants.dart';
+import 'package:medication_app_v0/core/extention/string_extention.dart';
+import 'package:medication_app_v0/core/init/locale_keys.g.dart';
+import 'package:medication_app_v0/core/init/services/auth_manager.dart';
+import 'package:mobx/mobx.dart';
+part 'profile_viewmodel.g.dart';
+
+class ProfileViewModel = _ProfileViewModelBase with _$ProfileViewModel;
+
+abstract class _ProfileViewModelBase with Store, BaseViewModel {
+  late GlobalKey<FormState> profileFormState;
+  late TextEditingController profileNameController;
+  late TextEditingController profileAgeController;
+  late TextEditingController profileWeightcontroller;
+  late TextEditingController profileGenderController;
+  late TextEditingController profileMailController;
+  late TextEditingController profilePasswordController;
+  UserDataModel currentUser = UserDataModel(fullName: '', birthDay: '', mail: '');
+
+  String chosenValue = '';
+  @observable
+  bool isPasswordVisible = false;
+
+  @observable
+  bool isLoading = false;
+
+  void setContext(BuildContext context) => this.viewContext = context;
+  void init() async {
+    changeLoading();
+    profileFormState = GlobalKey();
+    currentUser = await getData() ?? UserDataModel(fullName: '', birthDay: '', mail: '');
+    profileNameController = TextEditingController()
+      ..text = currentUser.fullName ?? '';
+    profileAgeController = TextEditingController()
+      ..text = getAge(currentUser.birthDay ?? '');
+    profileGenderController = TextEditingController();
+    profileMailController = TextEditingController()..text = currentUser.mail ?? '';
+    profilePasswordController = TextEditingController();
+    changeLoading();
+  }
+
+  String? validateEmail(String? value) {
+    String pattern =
+        r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]"
+        r"{0,253}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]"
+        r"{0,253}[a-zA-Z0-9])?)*$";
+    RegExp regex = RegExp(pattern);
+    if (value == null || !regex.hasMatch(value))
+      return LocaleKeys.profile_MAIL_ERROR_TEXT.locale;
+    return null;
+  }
+
+  /*String validatePassword(String value) {
+    Pattern pattern = r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,}$';
+    RegExp regExp = new RegExp(pattern);
+    if (!regExp.hasMatch(value) || value == null || value.length < 8) {
+      return LocaleKeys.profile_PASSWORD_ERROR_TEXT.locale;
+    } else
+      return null;
+  }*/
+
+  @action
+  void seePassword() {
+    isPasswordVisible = !isPasswordVisible;
+  }
+
+  void navigateResetPasswordPage() {
+    navigation.navigateToPage(path: NavigationConstants.RESET_PASSWORD_VIEW);
+  }
+
+  Future<UserDataModel?> getData() async {
+    AuthManager auth = AuthManager.instance;
+    UserDataModel? data = await auth.getUserData();
+    print(data?.fullName);
+    return data;
+  }
+
+  @action
+  void changeLoading() {
+    isLoading = !isLoading;
+  }
+
+  String getAge(String date) {
+    try {
+      int birthYear = int.parse(date.split("/")[2]);
+      int age = 2021 - birthYear;
+      return age.toString();
+    } catch (e) {
+      return "";
+    }
+  }
+
+  void saveUserData() async {
+    UserDataModel currentUserData = UserDataModel(
+        birthDay: currentUser.birthDay,
+        fullName: profileNameController.text,
+        mail: profileMailController.text);
+    var x = await AuthManager.instance.setUserData(currentUserData);
+    print(x.toString());
+  }
+}
